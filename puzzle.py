@@ -158,8 +158,9 @@ class Puzzle:
         queue = PriorityQueue()
         queue.put(node)
         visitedNodes = []
-        indexSelected = 0
+        # indexSelected = 0
         n = 1
+
         while (not node.isEqual(final) and not queue.empty()):
             node = queue.get()
             visitedNodes.append(node)
@@ -175,7 +176,7 @@ class Puzzle:
                     childNodes[i].dist += childNodes[i].cost
                     queue._put(childNodes[i])
             n += 1
-            auxCost = 0
+            # auxCost = 0
 
         moves = []
         self.cost = n
@@ -191,5 +192,4 @@ class Puzzle:
         print("## A* ##\n")
         print("Time Spent {temp: .5f}:".format(temp = fim-inicio))
         print("we visited:",n,"\n")
-
         return moves[::-1]
