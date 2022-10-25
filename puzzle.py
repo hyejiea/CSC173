@@ -1,9 +1,10 @@
 from random import randint
 from matrix import Matrix
-from queue import PriorityQueue
+from queue import PriorityQueue, Queue
 import random
 import pygame
-import colors
+import constant
+import numpy as np
 import time
 
 class Puzzle:
@@ -32,11 +33,11 @@ class Puzzle:
             for i in numbers:
                 if int(i) not in ref:
                     valid = False
-                else:
+                else: 
                     ref.remove(int(i))
         return valid
 
-    def randomBlocks(self):
+    def randomBlocks(self): 
         n = randint(30,40)
         for i in range(n):
             zero = self.matrix.searchBlock(0)
@@ -64,7 +65,7 @@ class Puzzle:
         i=0
         for k in range(3):
             for j in range(3):
-                blocks.append({'rect':pygame.Rect(block_x, block_y, block_w, block_h),'color':colors.BABY_BLUE,'block':m[k][j]})
+                blocks.append({'rect':pygame.Rect(block_x, block_y, block_w, block_h),'color':constant.BABY_BLUE,'block':m[k][j]})
                 block_x += block_w+1
                 i+=1
             block_y += block_h+1
@@ -84,7 +85,7 @@ class Puzzle:
             i=0
             for k in range(3):
                 for j in range(3):
-                    blocks.append({'rect':pygame.Rect(block_x, block_y, block_w, block_h),'color':colors.BABY_BLUE,'block':int(numbers[i])})
+                    blocks.append({'rect':pygame.Rect(block_x, block_y, block_w, block_h),'color':constant.BABY_BLUE,'block':int(numbers[i])})
                     block_x += block_w+1 #right
                     i+=1
                 block_y += block_h+1 #down
@@ -109,7 +110,9 @@ class Puzzle:
 
 
     def bfs(self):
-        #breadth search evaluation function
+        
+        # breadth-first search function
+
         inicio = time.time()
         node = self.matrix
         Mfinal = Matrix(3,3)
@@ -145,11 +148,11 @@ class Puzzle:
         self.lastSolveTime = fim-inicio
         print("## BFS ##\n")
         print("Time Spent {temp: .5f}:".format(temp = fim-inicio))
-        print("We visited:",n,"\n")
+        print("You visited:",n,"\n")
         return moves[::-1]
-
+    
     def a_star(self):
-        # iniciando timer
+        # starting timer
         inicio = time.time()
         node = self.matrix
         Mfinal = Matrix(3,3)
@@ -158,9 +161,8 @@ class Puzzle:
         queue = PriorityQueue()
         queue.put(node)
         visitedNodes = []
-        # indexSelected = 0
+        indexSelected = 0
         n = 1
-
         while (not node.isEqual(final) and not queue.empty()):
             node = queue.get()
             visitedNodes.append(node)
@@ -176,8 +178,7 @@ class Puzzle:
                     childNodes[i].dist += childNodes[i].cost
                     queue._put(childNodes[i])
             n += 1
-            # auxCost = 0
-
+            auxCost = 0
         moves = []
         self.cost = n
         if(node.isEqual(final)):
@@ -186,10 +187,12 @@ class Puzzle:
             while nd != None:
                 if nd.move != '':
                     moves.append(nd.move)
-                n
+                nd = nd.previous
+
         fim = time.time()
         self.lastSolveTime = fim-inicio
         print("## A* ##\n")
-        print("Time Spent {temp: .5f}:".format(temp = fim-inicio))
-        print("we visited:",n,"\n")
+        print("Time spent {temp: .5f}:".format(temp = fim-inicio))
+        print("We visited:",n,"\n")
+
         return moves[::-1]
