@@ -3,10 +3,19 @@ from puzzle import Puzzle
 import pygame
 import pygame_gui
 import time
-import constant
+# import constant
 import os
 
-SCREEN_SIZE = (1280, 720)
+SCREEN_SIZE = (1000, 720)
+BLACK = 0, 0, 0
+WHITE = 255,255,255
+GRAYBG = 15, 15, 15
+BABY_BLUE = 191, 215, 237
+BLUE_GROTTO = 96, 163, 217
+ROYAL_BLUE = 0, 116, 183
+NAVY_BLUE = 0, 59, 115
+GREEN = 159, 226, 191
+TORQ = 64, 224, 208
 
 
 pygame.init()
@@ -15,10 +24,10 @@ BASICFONT = pygame.font.SysFont('FiraCode-Retina.ttf',50)
 pygame.display.set_caption('8 Puzzle')
 window_surface = pygame.display.set_mode(SCREEN_SIZE)
 background = pygame.Surface(SCREEN_SIZE)
-background.fill(pygame.Color(constant.GREEN))
-manager = pygame_gui.UIManager(SCREEN_SIZE, 'theme.json')
+background.fill(pygame.Color(WHITE))
+manager = pygame_gui.UIManager(SCREEN_SIZE)
 
-programIcon = pygame.image.load(os.path.abspath("C:/Users/User/Downloads/888P/8-puzzle-main/logo.png"))
+programIcon = pygame.image.load(os.path.abspath("C:/Users/User/Desktop/eight_puzzle_Final/8_puzzle/logo.png"))
 pygame.display.set_icon(programIcon)
 
 pygame_gui.core.IWindowInterface.set_display_title(self=window_surface,new_title="8 Puzzle")
@@ -28,7 +37,7 @@ def display_elements():
     ### Title Label
     pygame_gui.elements.ui_label.UILabel(manager=manager,
                                         text="8 Puzzle Game",
-                                        relative_rect=pygame.Rect((540, 10), (300, 70)),
+                                        relative_rect=pygame.Rect((350, 10), (300, 70)),
                                         object_id="#title_box"
                                         )
 
@@ -67,13 +76,13 @@ alert_label = pygame_gui.elements.ui_label.UILabel(
 def draw_blocks(blocks):
     for block in blocks:
         if block['block'] != 0:
-            pygame.draw.rect(window_surface, constant.BLUE_GROTTO, block['rect'])
-            textSurf = BASICFONT.render(str(block['block']), True, constant.NAVY_BLUE)
+            pygame.draw.rect(window_surface,BLUE_GROTTO, block['rect'])
+            textSurf = BASICFONT.render(str(block['block']), True,WHITE)
             textRect = textSurf.get_rect()
             textRect.center = block['rect'].left+50,block['rect'].top+50
             window_surface.blit(textSurf, textRect)
         else:
-            pygame.draw.rect(window_surface, constant.ROYAL_BLUE, block['rect'])
+            pygame.draw.rect(window_surface,ROYAL_BLUE, block['rect'])
 
 def solveAnimation(moves):
     for mv in moves:

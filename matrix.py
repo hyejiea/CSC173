@@ -1,7 +1,13 @@
 
-from random import randint
 from copy import deepcopy
 import numpy as np
+
+# Answer tracker
+# goalState = 12345678
+# maxDepth = 0
+# nodesExpanded = 1
+# isFound = False
+# runTime = 0
 
 class Matrix():
 
@@ -110,6 +116,8 @@ class Matrix():
                     fi, fj = self.getXY(self.matrix[i][j], Final.matrix)
                     res += abs(fi - i) + abs(fj - j)
         return res
+
+
 
     def getMatrix(self):
         return self.matrix

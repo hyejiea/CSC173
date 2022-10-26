@@ -1,11 +1,28 @@
 from random import randint
+from tkinter.messagebox import showinfo
+
 from matrix import Matrix
-from queue import PriorityQueue, Queue
+from queue import PriorityQueue
 import random
 import pygame
-import constant
-import numpy as np
 import time
+
+BLACK = 0, 0, 0
+WHITE = 255,255,255
+GRAYBG = 15, 15, 15
+BABY_BLUE = 191, 215, 237
+BLUE_GROTTO = 96, 163, 217
+ROYAL_BLUE = 0, 116, 183
+NAVY_BLUE = 0, 59, 115
+GREEN = 159, 226, 191
+TORQ = 64, 224, 208
+
+WIDTH = 800
+HEIGHT = 641
+FPS = 60
+title = "Sliding Puzzle Game"
+TILESIZE = 128
+GAME_SIZE = 3
 
 class Puzzle:
 
@@ -65,7 +82,7 @@ class Puzzle:
         i=0
         for k in range(3):
             for j in range(3):
-                blocks.append({'rect':pygame.Rect(block_x, block_y, block_w, block_h),'color':constant.BABY_BLUE,'block':m[k][j]})
+                blocks.append({'rect':pygame.Rect(block_x, block_y, block_w, block_h),'color':BABY_BLUE,'block':m[k][j]})
                 block_x += block_w+1
                 i+=1
             block_y += block_h+1
@@ -85,7 +102,7 @@ class Puzzle:
             i=0
             for k in range(3):
                 for j in range(3):
-                    blocks.append({'rect':pygame.Rect(block_x, block_y, block_w, block_h),'color':constant.BABY_BLUE,'block':int(numbers[i])})
+                    blocks.append({'rect':pygame.Rect(block_x, block_y, block_w, block_h),'color':BABY_BLUE,'block':int(numbers[i])})
                     block_x += block_w+1 #right
                     i+=1
                 block_y += block_h+1 #down
@@ -93,6 +110,8 @@ class Puzzle:
             self.blocks = blocks
             return True
         return False
+    
+
 
     def initialize(self):
         blocks = self.final_state
@@ -107,10 +126,10 @@ class Puzzle:
     def getCost(self,actual):
         while(actual > 0):
             return 1
-
+    
 
     def bfs(self):
-        
+
         # breadth-first search function
 
         inicio = time.time()
@@ -150,7 +169,7 @@ class Puzzle:
         print("Time Spent {temp: .5f}:".format(temp = fim-inicio))
         print("You visited:",n,"\n")
         return moves[::-1]
-    
+
     def a_star(self):
         # starting timer
         inicio = time.time()
@@ -196,3 +215,52 @@ class Puzzle:
         print("We visited:",n,"\n")
 
         return moves[::-1]
+
+# class Tile(pygame.sprite.Sprite):
+
+#     def __init__(self, game, x, y, text):
+#         self.groups = game.all_sprites
+#         pygame.sprite.Sprite.__init__(self, self.groups)
+#         self.game = game
+#         self.image = pygame.Surface((TILESIZE, TILESIZE))
+#         self.x, self.y = x, y
+#         self.text = text
+#         self.rect = self.image.get_rect()
+#         if self.text != "empty":
+#             # self.font = pygame.font.SysFont("Consolas", 50)
+#             # font_surface = self.font.render(self.text, True, BLACK)
+#             # self.image.fill(WHITE)
+#             self.font_size = self.font.size(self.text)
+#             draw_x = (TILESIZE / 2) - self.font_size[0] / 2
+#             draw_y = (TILESIZE / 2) - self.font_size[1] / 2
+#             self.image.blit((draw_x, draw_y))
+
+
+#     def update(self):
+#         self.rect.x = self.x * TILESIZE
+#         self.rect.y = self.y * TILESIZE
+
+#     def click(self, mouse_x, mouse_y):
+#         return self.rect.left <= mouse_x <= self.rect.right and self.rect.top <= mouse_y <= self.rect.bottom
+
+#     def right(self):
+#         return self.rect.x + TILESIZE < GAME_SIZE * TILESIZE
+
+#     def left(self):
+#         return self.rect.x - TILESIZE >= 0
+
+#     def up(self):
+#         return self.rect.y - TILESIZE >= 0
+
+#     def down(self):
+#         return self.rect.y + TILESIZE < GAME_SIZE * TILESIZE
+
+class UIElement:
+    def __init__(self, x, y, text):
+        self.x, self.y = x, y
+        self.text = text
+
+    def draw(self, screen):
+        font = pygame.font.SysFont("Consolas", 30)
+        text = font.render(self.text, True, WHITE)
+        screen.blit(text, (self.x, self.y))
